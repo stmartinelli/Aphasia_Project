@@ -1,0 +1,82 @@
+---
+title: "Aphasia Project"
+author: "Stella Martinelli"
+date: "7/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Investigating The Effects Of Multilingualism On One's Stroke Recovery From Aphasia
+After suffering a stroke, survivors often exhibit a loss of understanding or expression in speech caused by brain damage which is commonly referred to as Aphasia. Recovering from aphasia relies on the ability of the brain to heal itself through neuroplasticity, which is essentially your brain rewiring itself by regenerating, re-establishing, or rearranging neural connections in response to the damage. Studies have suggested that multilingualism enhances neuroplasticity and recover faster from aphasia. Multilingualism employ both brain hemispheres, so it is presumed that the brain better compensates after injury[Gray 2016]. This project analyzing EEG data from professor Segawa’s research lab. For this study, an electroencephalogram was used to measure the neural activity of the brain using electrodes positioned on the cap (set at Gamma 30-45). This experiment investigates and maps the recovery of stroke survivors with aphasia to determine what effect multilingualism has on recovery. Since the frontal lobe is the area of the brain involved in cognitive learning, I compared the neural activity of electrodes positioned on frontal lobe either the left or right brain hemisphere(Left: F7, T7, Fp1, F3 & Right: F8, T9, Fp2, F4).   
+
+In this project I aim to:
+
+Create compelling visuals comparing neural activity & mapping of electrodes determined by an EEG tests of two stroke survivors with aphasia. One survivor is multilingual while the other is monolingual. In order to see if multilingualism affects recovery. 
+
+## Research Question
+Does multilingualism have an affect on stroke survivor's recovery from aphasia?
+
+## Required Packages
+```{r, message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+```
+## Loading Data
+```{r, cache=TRUE}
+#loading in data to be read
+EEGResults= read.csv(file= 'EEGResults.csv')
+head(EEGResults)
+```
+## Analysis & Visualization of Brain Activity of F7 & F8
+F7 is located on the left hemisphere while F8 is located on the right hemisphere. The data compares brain activity/function of two stroke survivors with aphasia; one that is multilingual (Multilingual) & one that is not (PWA)
+```{r} 
+## Function made in order to select the two desired electrodes to analyze & plot the data
+plot_fun = function(EEGResults, electrode1, electrode2) {
+
+  plot_data = filter(EEGResults, Electrode == electrode1 | Electrode == electrode2)
+
+  plot_obj = ggplot(plot_data) +
+    
+    geom_bar(stat = "identity", aes(x = Electrode, y = Gamma, fill=Patient), position="dodge") +
+
+    xlab("Left & Right Hemispheres")+
+
+    ylab("Power10*log10(uV^2/Hz)") +
+
+    ggtitle(paste(electrode1, '&', electrode2, sep = ' '))
+
+  return(plot_obj)
+}
+plot_fun(EEGResults, 'F7', 'F8')
+ggsave("F7_F8.png")
+```
+## Analysis & Visualization of Brain Activity of F3 & F4
+F3 is located on the left hemisphere & F4 is on the right hemisphere
+```{r} 
+#same function used just called for different electrodes & saved, repeated this with other electrodes as well
+plot_fun(EEGResults, 'F3', 'F4')
+ggsave("F3_F4.png")
+```
+## Analysis & Visualization of Brain Activity of T7 & T9
+T7 is located on the left hemisphere & T9 is on the right hemisphere
+
+```{r}
+plot_fun(EEGResults, 'T7', 'T9')
+ggsave("T7_T9.png")
+```
+## Analysis & Visualization of Brain Activity of Fp1 & Fp2
+Fp1 is located on the left hemisphere & Fp2 is on the right hemisphere
+
+```{r}
+plot_fun(EEGResults, 'Fp1', 'Fp2')
+ggsave("Fp1_Fp2.png")
+```
+## Conclusion
+
+The results from this study does support our research question shows that there is a visible difference in brain activity at the electrode positions used in this research.The electrode positions all detected a greater frequency of electrical signaling in the multilingual stroke survivor when compared to monolingual stroke survivor. The neural activity levels measured in the left & right hemispheres differed suggesting one hemisphere is compensating more.   Further research and testing is needed in order to validate our research question. 
+
+Citations-'Gray 2016'[@gray_kiran_2016]
+Segawa Research Aphasia Lab https://www.segawalab.com/people
